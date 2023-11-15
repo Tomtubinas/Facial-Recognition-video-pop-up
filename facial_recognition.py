@@ -1,27 +1,26 @@
-#This is one way that I found to play a video but we would need to find out how to play this while a person is not paying attention
-#to the screen. 
-
 import cv2
+import numpy as np
+#ffpyplayer for playing audio
+from ffpyplayer.player import MediaPlayer
 
-def playVideo():
-    file = r'Path to video file' 
-    cap = cv2.VideoCapture(file)
+video_path = r'Path to File'
 
-    cv2.namedWindow("Video Player", cv2.WINDOW_NORMAL)
-    cv2.resizeWindow("Video Player", 1920, 1080)
-    
-    while(cap.isOpened()):
-        success, frame = cap.read()
-        if success:
-            cv2.imshow('Video Player', frame)
-            quitButton = cv2.waitKey(25) & 0xFF == ord('q')
-            closeButton = cv2.getWindowProperty('Video Player', cv2.WND_PROP_VISIBLE) < 1
-            if quitButton or closeButton: 
-                break
-        else:
+def PlayVideo(video_path):
+    video=cv2.VideoCapture(video_path)
+    player = MediaPlayer(video_path)
+    while True:
+        grabbed, frame=video.read()
+        audio_frame, val = player.get_frame()
+        if not grabbed:
+            print("End of video")
             break
-
-    cap.release()
+        if cv2.waitKey(28) & 0xFF == ord("q"):
+            break
+        cv2.imshow("Video", frame)
+        if val != 'eof' and audio_frame is not None:
+            #audio
+            img, t = audio_frame
+    video.release()
     cv2.destroyAllWindows()
-
-playVideo()
+    
+PlayVideo(video_path)
