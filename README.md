@@ -10,4 +10,4 @@ Phase 3
 Open file that scares user and add sound to the image.
 
 Notes:
-https://www.youtube.com/watch?v=vcSf4jd921A
+https://www.youtube.com/watch?v=636d_GqkmM8
