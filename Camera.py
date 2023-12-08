@@ -14,7 +14,7 @@ screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 root.destroy()
 
-video_path = r"Rick.mp4"
+video_path = r'Rick.mp4'
 
 def play_video():
     video = cv2.VideoCapture(video_path)
@@ -41,19 +41,21 @@ video_playing = False
 while True:
     ret, frame = cap.read()
 
-    startTime = 2
-
     frame = cv2.resize(frame, (screen_width, screen_height))
     faces = detect_bounding_box(frame)
 
     cv2.imshow('BEANS', frame)
 
     if len(faces) == 0 and not video_playing:
-        video_playing = True
-        video_thread = threading.Thread(target=play_video)
-        video_thread.start()
-        cap.release()
-        cv2.destroyWindow('BEANS')
+        time.sleep(4)
+        
+        faces = detect_bounding_box(frame)
+        if len(faces) == 0:
+            video_playing = True
+            video_thread = threading.Thread(target=play_video)
+            video_thread.start()
+            cap.release()
+            cv2.destroyWindow('BEANS')
 
     elif len(faces) > 0:
         video_playing = False
